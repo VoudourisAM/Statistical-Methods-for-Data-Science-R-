@@ -1,0 +1,54 @@
+cell_data <- read.csv("C://Users//voudo//OneDrive//Υπολογιστής//Σημαντικα//MASTER//3st Semester//Statistical Methods for Data Science//Lessons//Homeworks//Homework 1_27-10-2025//CellService.csv ", header = TRUE, sep = ";")
+
+#a. Consider T-Mobile first. What is the median rating?
+median_tm <- median(cell_data$T_Mobile)
+cat("Median T-Mobile:", median_tm, "\n")
+#a. Consider T-Mobile first. What is the median rating?
+
+
+#b. Develop a five-number summary for the T-Mobile service.
+fivenum_tm <- fivenum(cell_data$T_Mobile)
+cat("Five-number summary T-Mobile:", fivenum_tm, "\n")
+#b. Develop a five-number summary for the T-Mobile service.
+
+
+#c. Are there any outliers for T-Mobile? Explain.
+iqr_tm <- IQR(cell_data$T_Mobile)
+q1_tm <- quantile(cell_data$T_Mobile, 0.25)
+q3_tm <- quantile(cell_data$T_Mobile, 0.75)
+lower_bound_tm <- q1_tm - 1.5 * iqr_tm
+upper_bound_tm <- q3_tm + 1.5 * iqr_tm
+outliers_tm <- cell_data$T_Mobile[cell_data$T_Mobile < lower_bound_tm | cell_data$T_Mobile > upper_bound_tm]
+cat("T-Mobile outlier bounds:", lower_bound_tm, "-", upper_bound_tm, "\n")
+cat("T-Mobile outliers:", outliers_tm, "\n")
+#c. Are there any outliers for T-Mobile? Explain.
+
+
+#d. Repeat parts (b) and (c) for the other three cell-phone services.
+services <- c("AT_T", "Sprint", "Verizon")
+for (service in services) {
+  cat("\nService:", service, "\n")
+  fivenum_service <- fivenum(cell_data[[service]])
+  cat("Five-number summary:", fivenum_service, "\n")
+  
+  iqr_service <- IQR(cell_data[[service]])
+  q1_service <- quantile(cell_data[[service]], 0.25)
+  q3_service <- quantile(cell_data[[service]], 0.75)
+  
+  lower_bound <- q1_service - 1.5 * iqr_service
+  upper_bound <- q3_service + 1.5 * iqr_service
+  outliers <- cell_data[[service]][cell_data[[service]] < lower_bound | cell_data[[service]] > upper_bound]
+  
+  cat("Outlier bounds:", lower_bound, "-", upper_bound, "\n")
+  cat("Outliers:", outliers, "\n")
+}
+#d. Repeat parts (b) and (c) for the other three cell-phone services.
+
+
+#e. Show the boxplots for the four cell-phone services on one graph. Discuss what a comparison of the boxplots tells about the four services. Which service does Consumer Reports recommend as being best in terms of overall customer satisfaction?
+boxplot(cell_data[,2:5], 
+        names = c("AT&T", "Sprint", "T-Mobile", "Verizon"),
+        main = "Customer Satisfaction Scores by Cell Service",
+        ylab = "Satisfaction Score (0-100)", 
+        col = c("skyblue","lightgreen","pink","lightyellow"))
+#e. Show the boxplots for the four cell-phone services on one graph. Discuss what a comparison of the boxplots tells about the four services. Which service does Consumer Reports recommend as being best in terms of overall customer satisfaction?
